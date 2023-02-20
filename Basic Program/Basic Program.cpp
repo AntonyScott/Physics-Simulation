@@ -17,7 +17,9 @@ PxPvd*  pvd = 0;
 
 //simulation objects
 PxScene* scene;
-PxRigidDynamic* box;
+PxRigidDynamic* dynamicBox;
+PxRigidDynamic* dynamicBox2;
+PxRigidStatic* staticBox;
 PxRigidStatic* plane;
 
 int counter = 0;
@@ -99,21 +101,49 @@ void InitScene()
 	//default gravity
 	scene->setGravity(PxVec3(0.f, -9.81f, 0.f));
 
+	//static friction, dynamic friction, restitution
+	float static_friction = 0.5f;
+	float dynamic_friction = 0.5f;
+	float restition = 0.5f;
+
 	//materials
-	PxMaterial* default_material = physics->createMaterial(0.f, 0.f, 0.f);   //static friction, dynamic friction, restitution
+	PxMaterial* default_material = physics->createMaterial(static_friction, dynamic_friction, restition);   
 
 	//create a static plane (XZ)
 	plane = PxCreatePlane(*physics, PxPlane(PxVec3(0.f, 1.f, 0.f), 0.f), *default_material);
-	scene->addActor(*plane);
+	
+	//dynamicBox ----------------------------------------------------------------------
+	dynamicBox = physics->createRigidDynamic(PxTransform(PxVec3(0.f, 0.5f, 0.f)));	//create a dynamic actor and place it 10 m above the ground
+	dynamicBox->createShape(PxBoxGeometry(.5f, .5f, .5f), *default_material);	//create a box shape of 1m x 1m x 1m size (values are provided in halves)
+	//dynamicBox->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 
-	//create a dynamic actor and place it 10 m above the ground
-	box = physics->createRigidDynamic(PxTransform(PxVec3(0.f, 10.f, 0.f)));
-	//create a box shape of 1m x 1m x 1m size (values are provided in halves)
-	box->createShape(PxBoxGeometry(.5f, .5f, .5f), *default_material);
 	//update the mass of the box
-	PxRigidBodyExt::updateMassAndInertia(*box, 1.0f); //density of 1kg/m^3
-	cout << "Mass of box: " << box->getMass() << endl;
-	scene->addActor(*box);
+	PxRigidBodyExt::updateMassAndInertia(*dynamicBox, 1.0f); //density of 1kg/m^3
+	cout << "Mass of dynamic box: " << dynamicBox->getMass() << endl;
+	//---------------------------------------------------------------------------
+
+	//dynamicBox2 ----------------------------------------------------------------------
+	dynamicBox2 = physics->createRigidDynamic(PxTransform(PxVec3(0.f, 10.0f, 0.f)));	//create a dynamic actor and place it 10 m above the ground
+	dynamicBox2->createShape(PxBoxGeometry(.5f, .5f, .5f), *default_material);	//create a box shape of 1m x 1m x 1m size (values are provided in halves)
+	//dynamicBox2->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+
+	//update the mass of the box
+	PxRigidBodyExt::updateMassAndInertia(*dynamicBox, 1.0f); //density of 1kg/m^3
+	cout << "Mass of dynamic box2: " << dynamicBox->getMass() << endl;
+	//---------------------------------------------------------------------------
+
+	//staticBox
+	staticBox = physics->createRigidStatic(PxTransform(PxVec3(0.f, 10.0f, 0.f)));
+	staticBox->createShape(PxBoxGeometry(.5f, .5f, .5f), *default_material);
+
+	//objects added to scene
+	scene->addActor(*plane);
+	scene->addActor(*dynamicBox);
+	scene->addActor(*dynamicBox2);
+	//scene->addActor(*staticBox);
+
+	//add forces to objects
+	//dynamicBox->addForce(PxVec3(100.0f, 0.0f, 0.0f)); //added force of 100 newtons to X coordinate value of dynamicBox
 }
 
 /// Perform a single simulation step
@@ -123,12 +153,18 @@ void Update(PxReal delta_time)
 	scene->fetchResults(true);
 
 	counter++;
-	cout << counter << "secs ";
-	if (counter == 10) 
+	cout << counter << "secs - ";
+	/*if (counter == 10) 
 	{
-		PxTransform newTransform(PxVec3(10.0f, 100.0f, 0.0f));
+		PxTransform newTransform(PxVec3(10.0f, 0.0f, 0.0f));
 		box->setGlobalPose(newTransform);
+	}*/
+
+	if (dynamicBox->isSleeping())
+	{
+		cout << "dynamicBox is now asleep - ";
 	}
+	
 }
 
 /// The main function
@@ -151,8 +187,8 @@ int main()
 	while (!GetAsyncKeyState(VK_ESCAPE))
 	{
 		//'visualise' position and velocity of the box
-		PxVec3 position = box->getGlobalPose().p;
-		PxVec3 velocity = box->getLinearVelocity();
+		PxVec3 position = dynamicBox->getGlobalPose().p;
+		PxVec3 velocity = dynamicBox->getLinearVelocity();
 		cout << setiosflags(ios::fixed) << setprecision(2) << "x=" << position.x << 
 			", y=" << position.y << ", z=" << position.z << ",  ";
 		cout << setiosflags(ios::fixed) << setprecision(2) << "vx=" << velocity.x << 
