@@ -111,7 +111,8 @@ void InitScene()
 	//create a box shape of 1m x 1m x 1m size (values are provided in halves)
 	box->createShape(PxBoxGeometry(.5f, .5f, .5f), *default_material);
 	//update the mass of the box
-	PxRigidBodyExt::updateMassAndInertia(*box, 1.f); //density of 1kg/m^3
+	PxRigidBodyExt::updateMassAndInertia(*box, 1.0f); //density of 1kg/m^3
+	cout << "Mass of box: " << box->getMass() << endl;
 	scene->addActor(*box);
 }
 
@@ -123,6 +124,11 @@ void Update(PxReal delta_time)
 
 	counter++;
 	cout << counter << "secs ";
+	if (counter == 10) 
+	{
+		PxTransform newTransform(PxVec3(10.0f, 100.0f, 0.0f));
+		box->setGlobalPose(newTransform);
+	}
 }
 
 /// The main function
