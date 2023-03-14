@@ -41,6 +41,8 @@ namespace PhysicsEngine
 	{
 		Plane* plane;
 		Box* box;
+		CompoundObject* compound;
+		GoalPost* goalPost;
 
 	public:
 		///A custom scene class
@@ -48,6 +50,8 @@ namespace PhysicsEngine
 		{
 			px_scene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
 			px_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f);
+			px_scene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 1.0f);
+			px_scene->setVisualizationParameter(PxVisualizationParameter::eBODY_LIN_VELOCITY, 1.0f);
 		}
 
 		//Custom scene initialisation
@@ -63,12 +67,18 @@ namespace PhysicsEngine
 
 			
 			
-			for (int i = 0; i < 1000; i++) 
+			/*for (int i = 0; i < 100; i++) 
 			{
-				box = new Box(PxTransform(PxVec3(.0f, i, .0f)));
+				box = new Box(PxTransform(PxVec3(.0f, 0.1f, i*-2)));
 				box->Color(color_palette[i]);
 				Add(box);
-			}
+			}*/
+			/*compound = new CompoundObject();
+			Add(compound);
+			compound->Color(color_palette[0]);*/
+
+			goalPost = new GoalPost();
+			Add(goalPost);
 		}
 
 		//Custom udpate function
