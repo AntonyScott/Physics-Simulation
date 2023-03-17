@@ -114,28 +114,27 @@ namespace PhysicsEngine
 		GoalPost(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(0.5f, 10.0f, 0.5f), PxReal density = 1.f)
 			: StaticActor(pose)
 		{
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 2; i++)
 			{
 				CreateShape(PxBoxGeometry(dimensions), density);
-
-				if (i == 0) 
-				{
-					dimensions = PxVec3(.2f, .2f, .2f);
-				}
-				/*if (i == 1)
-				{
-					dimensions = PxVec3(.3f, .3f, .3f);
-				}
-				if (i == 2)
-				{
-					dimensions = PxVec3(.4f, .4f, .4f);
-				}*/
-				//CreateShape(PxBoxGeometry(dimensions), density);
-				//color_palette[i];
 			}
-			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, 0.5f, 0.0f)));
-			GetShape(1)->setLocalPose(PxTransform(PxVec3(2.0f, 0.5f, 0.0f)));
-			GetShape(2)->setLocalPose(PxTransform(PxVec3(4.0f, 0.5f, 0.0f)));
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(3.0f, 0.5f, 0.0f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(-3.0f, 0.5f, 0.0f)));
+		}
+	};
+
+	class GoalBar : public StaticActor
+	{
+	public:
+
+		GoalBar(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(3.0f, 0.5f, 0.5f), PxReal density = 1.f)
+			: StaticActor(pose)
+		{
+			for (int i = 0; i < 1; i++)
+			{
+				CreateShape(PxBoxGeometry(dimensions), density);
+			}
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, 5.0f, 0.0f)));
 		}
 	};
 

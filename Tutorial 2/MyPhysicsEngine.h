@@ -43,6 +43,7 @@ namespace PhysicsEngine
 		Box* box;
 		CompoundObject* compound;
 		GoalPost* goalPost;
+		GoalBar* goalBar;
 
 	public:
 		///A custom scene class
@@ -62,23 +63,12 @@ namespace PhysicsEngine
 			GetMaterial()->setDynamicFriction(.2f);
 
 			plane = new Plane();
-			plane->Color(PxVec3(210.f/255.f,210.f/255.f,210.f/255.f));
+			plane->Color(PxVec3(0.f/255.f,210.f/255.f,0.f/255.f));
 			Add(plane);
-
-			
-			
-			/*for (int i = 0; i < 100; i++) 
-			{
-				box = new Box(PxTransform(PxVec3(.0f, 0.1f, i*-2)));
-				box->Color(color_palette[i]);
-				Add(box);
-			}*/
-			/*compound = new CompoundObject();
-			Add(compound);
-			compound->Color(color_palette[0]);*/
-
 			goalPost = new GoalPost();
 			Add(goalPost);
+			goalBar = new GoalBar();
+			Add(goalBar);
 		}
 
 		//Custom udpate function
