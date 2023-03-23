@@ -118,8 +118,8 @@ namespace PhysicsEngine
 			{
 				CreateShape(PxBoxGeometry(dimensions), density);
 			}
-			GetShape(0)->setLocalPose(PxTransform(PxVec3(3.0f, 0.5f, 0.0f)));
-			GetShape(1)->setLocalPose(PxTransform(PxVec3(-3.0f, 0.5f, 0.0f)));
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(3.0f, 0.5f, -25.0f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(-3.0f, 0.5f, -25.0f)));
 		}
 	};
 
@@ -134,7 +134,34 @@ namespace PhysicsEngine
 			{
 				CreateShape(PxBoxGeometry(dimensions), density);
 			}
-			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, 5.0f, 0.0f)));
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, 5.0f, -25.0f)));
+		}
+	};
+
+	class RugbyBall : public DynamicActor 
+	{
+	public:
+
+		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 1.f, PxReal density = 1.5f)
+			: DynamicActor(pose)
+		{
+			for (int i = 0; i < 5; i++) 
+			{
+				if (i == 0)
+				{
+					radius = 0.9f;
+				}
+				if (i > 0 and i < 3)
+				{
+					radius = 0.7f;
+				}
+				CreateShape(PxSphereGeometry(radius), density);
+			}
+			//GetShape(0)->setLocalPose((PxTransform(PxVec3(0.0f, 0.5f, 4.5f))));
+			GetShape(1)->setLocalPose((PxTransform(PxVec3(0.5f, 0.0f, 0.0f))));
+			GetShape(2)->setLocalPose((PxTransform(PxVec3(-0.5f, 0.0f, 0.0f))));
+			GetShape(3)->setLocalPose((PxTransform(PxVec3(0.75f, 0.0f, 0.0f))));
+			GetShape(4)->setLocalPose((PxTransform(PxVec3(-0.75f, 0.0f, 0.0f))));
 		}
 	};
 

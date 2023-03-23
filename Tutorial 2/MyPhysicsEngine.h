@@ -44,6 +44,7 @@ namespace PhysicsEngine
 		CompoundObject* compound;
 		GoalPost* goalPost;
 		GoalBar* goalBar;
+		RugbyBall* rugbyBall;
 
 	public:
 		///A custom scene class
@@ -65,8 +66,18 @@ namespace PhysicsEngine
 			plane = new Plane();
 			plane->Color(PxVec3(0.f/255.f,210.f/255.f,0.f/255.f));
 			Add(plane);
+
+			Goal();
+
+			rugbyBall = new RugbyBall();
+			Add(rugbyBall);
+		}
+
+		virtual void Goal()
+		{
 			goalPost = new GoalPost();
 			Add(goalPost);
+
 			goalBar = new GoalBar();
 			Add(goalBar);
 		}
