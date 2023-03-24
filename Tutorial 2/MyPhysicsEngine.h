@@ -43,8 +43,10 @@ namespace PhysicsEngine
 		Box* box;
 		CompoundObject* compound;
 		GoalPost* goalPost;
-		GoalBar* goalBar;
+		GoalCrossbar* goalCrossbar;
 		RugbyBall* rugbyBall;
+		InnerPitchLines* innerPitchLines;
+		OuterPitchLines* outerPitchLines;
 
 	public:
 		///A custom scene class
@@ -67,19 +69,28 @@ namespace PhysicsEngine
 			plane->Color(PxVec3(0.f/255.f,210.f/255.f,0.f/255.f));
 			Add(plane);
 
-			Goal();
+			innerPitchLines = new InnerPitchLines();
+			Add(innerPitchLines);
 
-			rugbyBall = new RugbyBall();
+			outerPitchLines = new OuterPitchLines();
+			Add(outerPitchLines);
+
+			Goals();
+
+			rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 0.f, -42.85714287f)));
 			Add(rugbyBall);
+
+			/*box = new Box();
+			Add(box);*/
 		}
 
-		virtual void Goal()
+		virtual void Goals()
 		{
 			goalPost = new GoalPost();
 			Add(goalPost);
 
-			goalBar = new GoalBar();
-			Add(goalBar);
+			goalCrossbar = new GoalCrossbar();
+			Add(goalCrossbar);
 		}
 
 		//Custom udpate function

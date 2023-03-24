@@ -25,7 +25,7 @@ namespace PhysicsEngine
 		//a sphere with default parameters:
 		// - pose in 0,0,0
 		// - dimensions: 1m
-		// - denisty: 1kg/m^3
+		// - density: 1kg/m^3
 		Sphere(const PxTransform& pose=PxTransform(PxIdentity), PxReal radius=1.f, PxReal density=1.f) 
 			: DynamicActor(pose)
 		{ 
@@ -110,54 +110,94 @@ namespace PhysicsEngine
 	class GoalPost : public StaticActor
 	{
 	public:
-
-		GoalPost(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(0.5f, 10.0f, 0.5f), PxReal density = 1.f)
+		//rugby union goal posts are 13m meters high and 5.6m across
+		GoalPost(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(0.5f, 13.f, 0.5f), PxReal density = 1.f)
 			: StaticActor(pose)
 		{
 			for (int i = 0; i < 2; i++)
 			{
 				CreateShape(PxBoxGeometry(dimensions), density);
 			}
-			GetShape(0)->setLocalPose(PxTransform(PxVec3(3.0f, 0.5f, -25.0f)));
-			GetShape(1)->setLocalPose(PxTransform(PxVec3(-3.0f, 0.5f, -25.0f)));
+			//distance between goal posts is 5.6 meters (-2.3f and 2.3f)
+			//goal posts are raised by 13f on Y axis to sit on pitch
+			//they are placed on the goal line on the Z axis
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(-2.3f, 13.f, -71.42857145f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(2.3f, 13.f, -71.42857145f)));
 		}
 	};
 
-	class GoalBar : public StaticActor
+	class GoalCrossbar : public StaticActor
 	{
 	public:
 
-		GoalBar(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(3.0f, 0.5f, 0.5f), PxReal density = 1.f)
+		GoalCrossbar(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(2.5f, 0.5f, 0.5f), PxReal density = 1.f)
 			: StaticActor(pose)
 		{
 			for (int i = 0; i < 1; i++)
 			{
 				CreateShape(PxBoxGeometry(dimensions), density);
 			}
-			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, 5.0f, -25.0f)));
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, 3.0f, -71.42857145f)));
 		}
 	};
 
+	class InnerPitchLines : public StaticActor 
+	{
+		//creating a rugby union pitch, this class forms the inner lines
+	public:
+		InnerPitchLines(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(70.0f, 0.5f, 0.5f), PxReal density = 1.f)
+			: StaticActor(pose) 
+		{
+			for (int i = 0; i < 7; i++) 
+			{
+				CreateShape(PxBoxGeometry(dimensions), density);
+			}
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, 0.0f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -14.28571429f)));
+			GetShape(2)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -28.57142858f)));
+			GetShape(3)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -42.85714287f)));
+			GetShape(4)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -57.14285716f)));
+			GetShape(5)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -71.42857145f)));
+			GetShape(6)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -85.71428574f)));
+		}
+	};
+
+	class OuterPitchLines : public StaticActor 
+	{
+	public:
+		OuterPitchLines(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(0.5f, 0.5f, 45.f), PxReal density = 1.f)
+			: StaticActor(pose)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				CreateShape(PxBoxGeometry(dimensions), density);
+			}
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(70.0f, -0.49f, -40.0f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(-70.0f, -0.49f, -40.f)));
+		}
+	};
+
+	//compound shape class of a rugby ball
 	class RugbyBall : public DynamicActor 
 	{
 	public:
 
-		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 1.f, PxReal density = 1.5f)
+		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 1.f, PxReal density = 1.5f) //copied same constructor from sphere class
 			: DynamicActor(pose)
 		{
-			for (int i = 0; i < 5; i++) 
+			for (int i = 0; i < 5; i++) //creates 5 spheres
 			{
-				if (i == 0)
+				if (i == 0) //sets first sphere with radius of 0.75f
 				{
-					radius = 0.9f;
+					radius = 0.75f;
 				}
-				if (i > 0 and i < 3)
+				if (i > 0 and i < 3) //sets spheres 2 and 3 with radius of 0.5f
 				{
-					radius = 0.7f;
+					radius = 0.5f;
 				}
 				CreateShape(PxSphereGeometry(radius), density);
 			}
-			//GetShape(0)->setLocalPose((PxTransform(PxVec3(0.0f, 0.5f, 4.5f))));
+			GetShape(0)->setLocalPose((PxTransform(PxVec3(0.0f, 0.0f, 0.0f))));
 			GetShape(1)->setLocalPose((PxTransform(PxVec3(0.5f, 0.0f, 0.0f))));
 			GetShape(2)->setLocalPose((PxTransform(PxVec3(-0.5f, 0.0f, 0.0f))));
 			GetShape(3)->setLocalPose((PxTransform(PxVec3(0.75f, 0.0f, 0.0f))));
