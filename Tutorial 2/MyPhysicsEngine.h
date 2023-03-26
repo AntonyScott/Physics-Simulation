@@ -47,6 +47,7 @@ namespace PhysicsEngine
 		RugbyBall* rugbyBall;
 		InnerPitchLines* innerPitchLines;
 		OuterPitchLines* outerPitchLines;
+		BallCatapult* ballCatapult;
 
 	public:
 		///A custom scene class
@@ -66,7 +67,7 @@ namespace PhysicsEngine
 			GetMaterial()->setDynamicFriction(.2f);
 
 			plane = new Plane();
-			plane->Color(PxVec3(0.f/255.f,210.f/255.f,0.f/255.f));
+			plane->Color(PxVec3(0.f/255.f, 210.f/255.f, 0.f/255.f));
 			Add(plane);
 
 			innerPitchLines = new InnerPitchLines();
@@ -75,16 +76,20 @@ namespace PhysicsEngine
 			outerPitchLines = new OuterPitchLines();
 			Add(outerPitchLines);
 
-			Goals();
+			Goal();
 
 			rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 0.f, -42.85714287f)));
 			Add(rugbyBall);
+
+			ballCatapult = new BallCatapult();
+			ballCatapult->Color(PxVec3(242.f / 255.f, 5.f / 255.f, 116.f / 255.f));
+			Add(ballCatapult);
 
 			/*box = new Box();
 			Add(box);*/
 		}
 
-		virtual void Goals()
+		void Goal()
 		{
 			goalPost = new GoalPost();
 			Add(goalPost);

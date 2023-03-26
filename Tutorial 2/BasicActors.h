@@ -205,6 +205,24 @@ namespace PhysicsEngine
 		}
 	};
 
+	class BallCatapult : public DynamicActor 
+	{
+	public:
+
+		BallCatapult(const PxTransform& pose = PxTransform(PxIdentity), PxReal density = PxReal(1.0f))
+			: DynamicActor(pose) 
+		{
+			CreateShape(PxBoxGeometry(PxVec3(0.5f, 0.1f, 3.0f)), density);
+			CreateShape(PxBoxGeometry(PxVec3(1.0f, 0.1f, 1.0f)), density);
+
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(0.0f, 0.0f, 3.5f)));
+
+			//angle barrier
+			CreateShape(PxBoxGeometry(PxVec3(1.0f, 0.5f, 0.1f)), density);
+			GetShape(2)->setLocalPose(PxTransform(PxVec3(0.0f, 0.5f, 5.0f), PxQuat(PxPi / 4, PxVec3(1.0f, 0.0f, 0.0f))));
+		}
+	};
+
 	///The TriangleMesh class
 	class TriangleMesh : public StaticActor
 	{
