@@ -49,6 +49,8 @@ namespace PhysicsEngine
 		OuterPitchLines* outerPitchLines;
 		BallCatapult* ballCatapult;
 
+		PxMaterial* rugbyBallMat = CreateMaterial(1.16f, 0.f, 1.2f);
+
 	public:
 		///A custom scene class
 		void SetVisualisation()
@@ -78,15 +80,14 @@ namespace PhysicsEngine
 
 			Goal();
 
-			rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 0.f, -42.85714287f)));
+			//rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 10.f, -42.85714287f)));
+			rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 2.f, 5.f)));
+			rugbyBall->Material(rugbyBallMat);
 			Add(rugbyBall);
 
 			ballCatapult = new BallCatapult();
 			ballCatapult->Color(PxVec3(242.f / 255.f, 5.f / 255.f, 116.f / 255.f));
 			Add(ballCatapult);
-
-			/*box = new Box();
-			Add(box);*/
 		}
 
 		void Goal()
