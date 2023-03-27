@@ -49,7 +49,8 @@ namespace PhysicsEngine
 		OuterPitchLines* outerPitchLines;
 		BallCatapult* ballCatapult;
 
-		PxMaterial* rugbyBallMat = CreateMaterial(1.16f, 0.f, 1.2f);
+		PxMaterial* rugbyBallMat = CreateMaterial(0.9f, 0.65f, 1.2f);
+		PxMaterial* planeMat = CreateMaterial(0.f, 0.5f, 1.2f);
 
 	public:
 		///A custom scene class
@@ -70,6 +71,7 @@ namespace PhysicsEngine
 
 			plane = new Plane();
 			plane->Color(PxVec3(0.f/255.f, 210.f/255.f, 0.f/255.f));
+			plane->Material(planeMat);
 			Add(plane);
 
 			innerPitchLines = new InnerPitchLines();
@@ -81,7 +83,7 @@ namespace PhysicsEngine
 			Goal();
 
 			//rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 10.f, -42.85714287f)));
-			rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 2.f, 5.f)));
+			rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 10.f, 5.f)));
 			rugbyBall->Material(rugbyBallMat);
 			Add(rugbyBall);
 
