@@ -41,7 +41,7 @@ namespace PhysicsEngine
 		// - pose in 0,0,0
 		// - dimensions: 1m x 1m x 1m
 		// - denisty: 1kg/m^3
-		Box(const PxTransform& pose=PxTransform(PxIdentity), PxVec3 dimensions=PxVec3(.5f,.5f,.5f), PxReal density=1.f) 
+		Box(const PxTransform& pose=PxTransform(PxIdentity), PxVec3 dimensions=PxVec3(.5f, .5f, .5f), PxReal density=1.f) 
 			: DynamicActor(pose)
 		{ 
 			CreateShape(PxBoxGeometry(dimensions), density);
@@ -155,7 +155,9 @@ namespace PhysicsEngine
 			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, 0.0f)));
 			GetShape(1)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -14.28571429f)));
 			GetShape(2)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -28.57142858f)));
-			GetShape(3)->setLocalPose(PxTransform(PxVec3(0.0f, 0.0f, -42.85714287f)));
+			//GetShape(3)->setLocalPose(PxTransform(PxVec3(0.0f, 0.0f, -42.85714287f)));
+			//GetShape(3) is the half way line
+			GetShape(3)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -42.85714287f)));
 			GetShape(4)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -57.14285716f)));
 			GetShape(5)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -71.42857145f)));
 			GetShape(6)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -85.71428574f)));
@@ -164,6 +166,7 @@ namespace PhysicsEngine
 
 	class OuterPitchLines : public StaticActor 
 	{
+		//creating a rugby union pitch, this class forms the outer lines
 	public:
 		OuterPitchLines(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(0.5f, 0.5f, 45.f), PxReal density = 1.f)
 			: StaticActor(pose)
@@ -182,7 +185,7 @@ namespace PhysicsEngine
 	{
 	public:
 		//Average mass of rugby ball: 435g
-		//Average volume of rugby ball : 4800 cubmic cm
+		//Average volume of rugby ball : 4800 cubmic cm or 0.0148 cubic meters
 		//Density: 0.46kg / 0.0148 = 31.0810810811
 		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 0.1f, PxReal density = 31.1f) //copied same constructor from sphere class
 			: DynamicActor(pose)
@@ -226,6 +229,38 @@ namespace PhysicsEngine
 			//angle barrier
 			CreateShape(PxBoxGeometry(PxVec3(1.0f, 0.75f, 0.1f)), density);
 			GetShape(2)->setLocalPose(PxTransform(PxVec3(0.0f, 0.5f, 5.0f), PxQuat(PxPi / 4, PxVec3(1.0f, 0.0f, 0.0f))));
+		}
+	};
+
+	class SwingPost : public StaticActor
+	{
+	public:
+		//rugby union goal posts are 13m meters high and 5.6m across
+		SwingPost(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(0.5f, 4.f, 0.5f), PxReal density = 1.f)
+			: StaticActor(pose)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				CreateShape(PxBoxGeometry(dimensions), density);
+			}
+			//distance between goal posts is 5.6 meters (-2.3f and 2.3f)
+			//goal posts are raised by 13f on Y axis to sit on pitch
+			//they are placed on the goal line on the Z axis
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(-3.f, 4.f, 0.f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(3.f, 4.f, 0.f)));
+		}
+	};
+
+	class SwingTopBar : public StaticActor
+	{
+	public:
+
+		SwingTopBar(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(2.5f, 0.5f, 0.5f), PxReal density = 1.f)
+			: StaticActor(pose)
+		{
+			CreateShape(PxBoxGeometry(dimensions), density);
+
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, 7.5f, 0.f)));
 		}
 	};
 
