@@ -155,7 +155,7 @@ namespace PhysicsEngine
 			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, 0.0f)));
 			GetShape(1)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -14.28571429f)));
 			GetShape(2)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -28.57142858f)));
-			GetShape(3)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -42.85714287f)));
+			GetShape(3)->setLocalPose(PxTransform(PxVec3(0.0f, 0.0f, -42.85714287f)));
 			GetShape(4)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -57.14285716f)));
 			GetShape(5)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -71.42857145f)));
 			GetShape(6)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -85.71428574f)));
@@ -181,27 +181,33 @@ namespace PhysicsEngine
 	class RugbyBall : public DynamicActor 
 	{
 	public:
-
-		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 1.f, PxReal density = 1.5f) //copied same constructor from sphere class
+		//Average mass of rugby ball: 435g
+		//Average volume of rugby ball : 4800 cubmic cm
+		//Density: 0.46kg / 0.0148 = 31.0810810811
+		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 0.1f, PxReal density = 31.1f) //copied same constructor from sphere class
 			: DynamicActor(pose)
 		{
 			for (int i = 0; i < 5; i++) //creates 5 spheres
 			{
 				if (i == 0) //sets first sphere with radius of 0.75f
 				{
-					radius = 0.75f;
+					radius = 0.40f;
 				}
-				if (i > 0 and i < 3) //sets spheres 2 and 3 with radius of 0.5f
+				else if (i > 0 and i < 3) //sets spheres 2 and 3 with radius of 0.5f
 				{
-					radius = 0.5f;
+					radius = 0.30f;
+				}
+				else 
+				{
+					radius = 0.20f;
 				}
 				CreateShape(PxSphereGeometry(radius), density);
 			}
 			GetShape(0)->setLocalPose((PxTransform(PxVec3(0.0f, 0.0f, 0.0f))));
-			GetShape(1)->setLocalPose((PxTransform(PxVec3(0.5f, 0.0f, 0.0f))));
-			GetShape(2)->setLocalPose((PxTransform(PxVec3(-0.5f, 0.0f, 0.0f))));
-			GetShape(3)->setLocalPose((PxTransform(PxVec3(0.75f, 0.0f, 0.0f))));
-			GetShape(4)->setLocalPose((PxTransform(PxVec3(-0.75f, 0.0f, 0.0f))));
+			GetShape(1)->setLocalPose((PxTransform(PxVec3(0.20f, 0.0f, 0.0f))));
+			GetShape(2)->setLocalPose((PxTransform(PxVec3(-0.20f, 0.0f, 0.0f))));
+			GetShape(3)->setLocalPose((PxTransform(PxVec3(0.4f, 0.0f, 0.0f))));
+			GetShape(4)->setLocalPose((PxTransform(PxVec3(-0.4f, 0.0f, 0.0f))));
 		}
 	};
 
@@ -218,7 +224,7 @@ namespace PhysicsEngine
 			GetShape(1)->setLocalPose(PxTransform(PxVec3(0.0f, 0.0f, 3.5f)));
 
 			//angle barrier
-			CreateShape(PxBoxGeometry(PxVec3(1.0f, 0.5f, 0.1f)), density);
+			CreateShape(PxBoxGeometry(PxVec3(1.0f, 0.75f, 0.1f)), density);
 			GetShape(2)->setLocalPose(PxTransform(PxVec3(0.0f, 0.5f, 5.0f), PxQuat(PxPi / 4, PxVec3(1.0f, 0.0f, 0.0f))));
 		}
 	};
@@ -253,6 +259,89 @@ namespace PhysicsEngine
 			PxDefaultMemoryInputData input(stream.getData(), stream.getSize());
 
 			return GetPhysics()->createTriangleMesh(input);
+		}
+	};
+
+	//Distance joint with the springs switched on
+	class DistanceJoint : public Joint
+	{
+	public:
+		DistanceJoint(Actor* actor0, const PxTransform& localFrame0, Actor* actor1, const PxTransform& localFrame1)
+		{
+			PxRigidActor* px_actor0 = 0;
+			if (actor0)
+				px_actor0 = (PxRigidActor*)actor0->Get();
+
+			joint = (PxJoint*)PxDistanceJointCreate(*GetPhysics(), px_actor0, localFrame0, (PxRigidActor*)actor1->Get(), localFrame1);
+			joint->setConstraintFlag(PxConstraintFlag::eVISUALIZATION, true);
+			((PxDistanceJoint*)joint)->setDistanceJointFlag(PxDistanceJointFlag::eSPRING_ENABLED, true);
+			Damping(1.f);
+			Stiffness(1.f);
+		}
+
+		void Stiffness(PxReal value)
+		{
+			((PxDistanceJoint*)joint)->setStiffness(value);
+		}
+
+		PxReal Stiffness()
+		{
+			return ((PxDistanceJoint*)joint)->getStiffness();
+		}
+
+		void Damping(PxReal value)
+		{
+			((PxDistanceJoint*)joint)->setDamping(value);
+		}
+
+		PxReal Damping()
+		{
+			return ((PxDistanceJoint*)joint)->getDamping();
+		}
+	};
+
+	///Revolute Joint
+	class RevoluteJoint : public Joint
+	{
+	public:
+		RevoluteJoint(Actor* actor0, const PxTransform& localFrame0, Actor* actor1, const PxTransform& localFrame1)
+		{
+			PxRigidActor* px_actor0 = 0;
+			if (actor0)
+				px_actor0 = (PxRigidActor*)actor0->Get();
+
+			joint = PxRevoluteJointCreate(*GetPhysics(), px_actor0, localFrame0, (PxRigidActor*)actor1->Get(), localFrame1);
+			joint->setConstraintFlag(PxConstraintFlag::eVISUALIZATION, true);
+		}
+
+		void DriveVelocity(PxReal value)
+		{
+			//wake up the attached actors
+			PxRigidDynamic* actor_0, * actor_1;
+			((PxRevoluteJoint*)joint)->getActors((PxRigidActor*&)actor_0, (PxRigidActor*&)actor_1);
+			if (actor_0)
+			{
+				if (actor_0->isSleeping())
+					actor_0->wakeUp();
+			}
+			if (actor_1)
+			{
+				if (actor_1->isSleeping())
+					actor_1->wakeUp();
+			}
+			((PxRevoluteJoint*)joint)->setDriveVelocity(value);
+			((PxRevoluteJoint*)joint)->setRevoluteJointFlag(PxRevoluteJointFlag::eDRIVE_ENABLED, true);
+		}
+
+		PxReal DriveVelocity()
+		{
+			return ((PxRevoluteJoint*)joint)->getDriveVelocity();
+		}
+
+		void SetLimits(PxReal lower, PxReal upper)
+		{
+			((PxRevoluteJoint*)joint)->setLimit(PxJointAngularLimitPair(lower, upper));
+			((PxRevoluteJoint*)joint)->setRevoluteJointFlag(PxRevoluteJointFlag::eLIMIT_ENABLED, true);
 		}
 	};
 }
