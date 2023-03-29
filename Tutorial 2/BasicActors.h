@@ -264,6 +264,38 @@ namespace PhysicsEngine
 		}
 	};
 
+	class InnerBarrierLines : public StaticActor 
+	{
+		//creating a rugby union pitch, this class forms the inner lines
+	public:
+		InnerBarrierLines(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(71.f, 25.f, 2.f), PxReal density = 1.f)
+			: StaticActor(pose) 
+		{
+			for (int i = 0; i < 2; i++) 
+			{
+				CreateShape(PxBoxGeometry(dimensions), density);
+			}
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, 25.f, 20.0f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(0.0f, 25.f, -90.71428574f)));
+		}
+	};
+
+	class OuterBarrierLines : public StaticActor 
+	{
+		//creating a rugby union pitch, this class forms the outer lines
+	public:
+		OuterBarrierLines(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(0.5f, 25.f, 55.f), PxReal density = 1.f)
+			: StaticActor(pose)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				CreateShape(PxBoxGeometry(dimensions), density);
+			}
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(71.0f, 25.f, -34.0f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(-71.0f, 25.f, -34.f)));
+		}
+	};
+
 	///The TriangleMesh class
 	class TriangleMesh : public StaticActor
 	{

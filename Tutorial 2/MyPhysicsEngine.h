@@ -25,6 +25,8 @@ namespace PhysicsEngine
 		RugbyBall* rugbyBall;
 		InnerPitchLines* innerPitchLines;
 		OuterPitchLines* outerPitchLines;
+		InnerBarrierLines* innerBarrierLines;
+		OuterBarrierLines* outerBarrierLines;
 		BallCatapult* ballCatapult;
 		//RevoluteJoint brickChain(swingTopBar, (PxTransform(PxVec3(0.f, 2.f, -38.85714287f)), ));
 
@@ -53,6 +55,9 @@ namespace PhysicsEngine
 			
 			//spawns grass and rugby pitch lines
 			RugbyPitch();
+
+			//barrier spawn
+			Barrier();
 
 			//goal spawn function
 			Goal();
@@ -93,6 +98,19 @@ namespace PhysicsEngine
 			Add(outerPitchLines);
 		}
 
+		void Barrier() 
+		{
+			innerBarrierLines = new InnerBarrierLines();
+			innerBarrierLines->Color(PxVec3(135.f / 255.f, 139.f / 255.f, 140.f / 255.f));
+			innerBarrierLines->Material(metalMat);
+			Add(innerBarrierLines);
+
+			outerBarrierLines = new OuterBarrierLines();
+			outerBarrierLines->Color(PxVec3(135.f / 255.f, 139.f / 255.f, 140.f / 255.f));
+			outerBarrierLines->Material(metalMat);
+			Add(outerBarrierLines);
+		}
+
 		void Goal()
 		{
 			goalPost = new GoalPost();
@@ -109,7 +127,7 @@ namespace PhysicsEngine
 			//brick = new Box(PxTransform(PxVec3(0, 2, 0)), PxVec3(0.193675, 0.05715, 0.092075));
 			brick = new Box(PxTransform(PxVec3(0.f, 2.f, -38.85714287f)), PxVec3(0.193675f, 0.05715f, 0.092075f));
 			brick->Get()->is<PxRigidDynamic>()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
-			brick->Color(PxVec3(72.f / 255.f, 0.f / 255.f, 0.f / 255.f));
+			brick->Color(PxVec3(255.f / 255.f, 0.f / 255.f, 0.f / 255.f));
 			Add(brick);
 		}
 
