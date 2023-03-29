@@ -187,7 +187,7 @@ namespace PhysicsEngine
 		//Average mass of rugby ball: 435g
 		//Average volume of rugby ball : 4800 cubmic cm or 0.0148 cubic meters
 		//Density: 0.46kg / 0.0148 = 31.0810810811
-		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 0.1f, PxReal density = 31.1f) //copied same constructor from sphere class
+		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 0.1f, PxReal density = 1.f) //copied same constructor from sphere class
 			: DynamicActor(pose)
 		{
 			for (int i = 0; i < 5; i++) //creates 5 spheres
@@ -350,6 +350,33 @@ namespace PhysicsEngine
 		}
 	};
 
+	class Knights : public DynamicActor
+	{
+	public:
+		//a Box with default parameters:
+		// - pose in 0,0,0
+		// - dimensions: 1m x 1m x 1m
+		// - denisty: 1kg/m^3
+		Knights(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(0.5f, 2.f, 0.5f), PxReal density = 1.f)
+			: DynamicActor(pose)
+		{
+			for (int i = 0; i < 10; i++) 
+			{
+				CreateShape(PxBoxGeometry(dimensions), density);
+			}
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(0, 1.f, 0.f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(-2, 1.f, 0.f)));
+			GetShape(2)->setLocalPose(PxTransform(PxVec3(-4, 1.f, 0.f)));
+			GetShape(3)->setLocalPose(PxTransform(PxVec3(-6, 1.f, 0.f)));
+			GetShape(4)->setLocalPose(PxTransform(PxVec3(-8, 1.f, 0.f)));
+			GetShape(5)->setLocalPose(PxTransform(PxVec3(2.f, 1.f, 0.f)));
+			GetShape(6)->setLocalPose(PxTransform(PxVec3(4.f, 1.f, 0.f)));
+			GetShape(7)->setLocalPose(PxTransform(PxVec3(6.f, 1.f, 0.f)));
+			GetShape(8)->setLocalPose(PxTransform(PxVec3(8.f, 1.f, 0.f)));
+			GetShape(9)->setLocalPose(PxTransform(PxVec3(10.f, 1.f, 0.f)));
+		}
+	};
+
 	///The TriangleMesh class
 	class TriangleMesh : public StaticActor
 	{
@@ -440,11 +467,11 @@ namespace PhysicsEngine
 			//wake up the attached actors
 			PxRigidDynamic* actor_0, * actor_1;
 			((PxRevoluteJoint*)joint)->getActors((PxRigidActor*&)actor_0, (PxRigidActor*&)actor_1);
-			if (actor_0)
+			/*if (actor_0)
 			{
 				if (actor_0->isSleeping())
 					actor_0->wakeUp();
-			}
+			}*/
 			if (actor_1)
 			{
 				if (actor_1->isSleeping())

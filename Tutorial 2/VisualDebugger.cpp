@@ -93,6 +93,8 @@ namespace VisualDebugger
 		hud.AddLine(EMPTY, "");
 		//add a help screen
 		hud.AddLine(HELP, " Simulation");
+		hud.AddLine(HELP, "    F1 - swing rugby ball");
+		hud.AddLine(HELP, "    F2 - respawn rugby ball");
 		hud.AddLine(HELP, "    F9 - select next actor");
 		hud.AddLine(HELP, "    F10 - pause");
 		hud.AddLine(HELP, "    F12 - reset");
@@ -266,6 +268,14 @@ namespace VisualDebugger
 		switch (key)
 		{
 			//display control
+		case GLUT_KEY_F1:
+			//hud on/off
+			scene->SwingJoint();
+			break;
+		case GLUT_KEY_F2:
+			//hud on/off
+			scene->Ball();
+			break;
 		case GLUT_KEY_F5:
 			//hud on/off
 			hud_show = !hud_show;
