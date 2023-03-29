@@ -187,7 +187,7 @@ namespace PhysicsEngine
 		//Average mass of rugby ball: 435g
 		//Average volume of rugby ball : 4800 cubmic cm or 0.0148 cubic meters
 		//Density: 0.46kg / 0.0148 = 31.0810810811
-		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 0.1f, PxReal density = 1.f) //copied same constructor from sphere class
+		RugbyBall(const PxTransform& pose = PxTransform(PxIdentity), PxReal radius = 0.1f, PxReal density = 31.1f) //copied same constructor from sphere class
 			: DynamicActor(pose)
 		{
 			for (int i = 0; i < 5; i++) //creates 5 spheres

@@ -276,6 +276,10 @@ namespace VisualDebugger
 			//hud on/off
 			scene->Ball();
 			break;
+		case GLUT_KEY_F3:
+			//hud on/off
+			scene->Fork(camera->getEye(), camera->getDir());
+			break;
 		case GLUT_KEY_F5:
 			//hud on/off
 			hud_show = !hud_show;

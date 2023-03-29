@@ -271,13 +271,15 @@ namespace PhysicsEngine
 			PitchLines();
 		}
 
-		void Fork()
+		void Fork(PxVec3 camPos, PxVec3 camDir)
 		{
-			pitchfork = new Pitchfork((PxTransform(PxVec3(0.f, 0.5f, -1.5f))));
+			pitchfork = new Pitchfork((PxTransform(PxVec3(camPos))));
 			pitchfork->Color(PxVec3(64.f / 255.f, 35.f / 255.f, 25.f / 255.f));
 			//pitchfork->Get()->is<PxRigidDynamic>()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
 			pitchfork->Material(woodMat);
+			pitchfork->Get()->is<PxRigidDynamic>()->setMass(10);
 			Add(pitchfork);
+			pitchfork->Get()->is<PxRigidDynamic>()->addForce(PxVec3(camDir.x, camDir.y, camDir.z)* 100000);
 		}
 
 		void TruncheonWeapon() 
