@@ -232,6 +232,60 @@ namespace PhysicsEngine
 		}
 	};
 
+	class Pitchfork : public DynamicActor 
+	{
+	public:
+
+		Pitchfork(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(.5f, .5f, .5f), PxReal density = 1.f)
+		: DynamicActor(pose)
+		{
+			for (int i = 0; i < 6; i++) 
+			{
+				if (i == 0) 
+				{
+					dimensions = PxVec3(0.15f, 0.2f, 2.f);
+				}
+				else if (i == 1) 
+				{
+					dimensions = PxVec3(0.75f, 0.2f, 0.1f);
+				}
+				else
+				{
+					dimensions = PxVec3(0.1f, 0.2f, 0.5f);
+				}
+				CreateShape(PxBoxGeometry(dimensions), density);
+			}
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(0.f, 0.f, -2.f)));
+			GetShape(2)->setLocalPose(PxTransform(PxVec3(0.75f, 0.f, -2.5f)));
+			GetShape(3)->setLocalPose(PxTransform(PxVec3(-0.75f, 0.f, -2.5f)));
+			GetShape(4)->setLocalPose(PxTransform(PxVec3(0.25f, 0.f, -2.5f)));
+			GetShape(5)->setLocalPose(PxTransform(PxVec3(-0.25f, 0.f, -2.5f)));
+		}
+	};
+
+	class Truncheon : public DynamicActor 
+	{
+	public:
+		Truncheon(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(.5f, .5f, .5f), PxReal density = 1.f)
+			: DynamicActor(pose) 
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				if (i == 0)
+				{
+					dimensions = PxVec3(0.2f, 0.5f, 0.2f);
+				}
+				else 
+				{
+					dimensions = PxVec3(0.25f, 0.5f, 0.25f);
+				}
+				CreateShape(PxBoxGeometry(dimensions), density);
+			}
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(0.f, -1.f, 0.f)));
+
+		}
+	};
+
 	class SwingPost : public StaticActor
 	{
 	public:

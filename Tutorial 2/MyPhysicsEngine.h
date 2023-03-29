@@ -36,7 +36,7 @@ namespace PhysicsEngine
 		{
 		}
 	};
-
+	/*
 	struct FilterGroup
 	{
 		enum Enum
@@ -49,7 +49,7 @@ namespace PhysicsEngine
 	};
 
 	///An example class showing the use of springs (distance joints).
-	class Trampoline
+	/*class Trampoline
 	{
 		vector<DistanceJoint*> springs;
 		Box* bottom, * top;
@@ -180,25 +180,26 @@ namespace PhysicsEngine
 		}
 
 		return PxFilterFlags();
-	};
+	};*/
 
 	///Custom scene class
 	class MyScene : public Scene
 	{
 		Plane* plane;
 		Box* brick;
-		CompoundObject* compound;
 		GoalPost* goalPost;
 		GoalCrossbar* goalCrossbar;
 		SwingPost* swingPost;
 		SwingTopBar* swingTopBar;
 		RugbyBall* rugbyBall;
+		Pitchfork* pitchfork;
+		Truncheon* truncheon;
 		InnerPitchLines* innerPitchLines;
 		OuterPitchLines* outerPitchLines;
 		InnerBarrierLines* innerBarrierLines;
 		OuterBarrierLines* outerBarrierLines;
 		BallCatapult* ballCatapult;
-		Trampoline* trampoline;
+		//Trampoline* trampoline;
 		RevoluteJoint* ballChain;
 
 		PxMaterial* rubberMat = CreateMaterial(0.9f, 0.65f, 0.828f);
@@ -227,7 +228,7 @@ namespace PhysicsEngine
 			//spawns grass and rugby pitch lines
 			RugbyPitch();
 
-			//barrier spawn
+			//barrier castle spawn
 			Barrier();
 
 			//goal spawn function
@@ -236,22 +237,27 @@ namespace PhysicsEngine
 			//ball spawn function
 			Ball();
 
+			//pitchfork spawn function
+			//Fork();
+
+			//truncheon spawn function
+			TruncheonWeapon();
+
 			//swing arch function
 			SwingArch();
 
 			//brick spawn function
 			Brick();
 
-			//Trampoline::AddToScene()
-			/*trampoline = new Trampoline(PxVec3(3.f, 3.f, 3.f), PxReal(5.f), PxReal(5.f));
-			trampoline->AddToScene(this);*/
+			//swing joint function
+			SwingJoint();
 
-			ballChain = new RevoluteJoint(swingTopBar, PxTransform(PxVec3(2.f, 0.f, 0.f)), brick, PxTransform(PxVec3(0.f, 5.f, 0.f)));
-			//Add(ballChain);
 			//catapult spawn function
 			//Catapult();
 
-			//brickChain();
+			//Trampoline::AddToScene()
+			/*trampoline = new Trampoline(PxVec3(3.f, 3.f, 3.f), PxReal(5.f), PxReal(5.f));
+			trampoline->AddToScene(this);*/
 		}
 
 		void RugbyPitch() 
@@ -262,6 +268,24 @@ namespace PhysicsEngine
 			Add(plane);
 
 			PitchLines();
+		}
+
+		void Fork() 
+		{
+			pitchfork = new Pitchfork((PxTransform(PxVec3(0.f, 0.5f, -1.5f))));
+			pitchfork->Color(PxVec3(64.f / 255.f, 35.f / 255.f, 25.f / 255.f));
+			//pitchfork->Get()->is<PxRigidDynamic>()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+			pitchfork->Material(woodMat);
+			Add(pitchfork);
+		}
+
+		void TruncheonWeapon() 
+		{
+			truncheon = new Truncheon(PxTransform(PxVec3(0.f, 2.f, -38.85714287f)));
+			truncheon->Get()->is<PxRigidDynamic>()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+			truncheon->Color(PxVec3(0.f / 255.f, 0.f / 255.f, 0.f / 255.f));
+			truncheon->Material(woodMat);
+			Add(truncheon);
 		}
 
 		void PitchLines()
@@ -320,7 +344,7 @@ namespace PhysicsEngine
 		void Ball() 
 		{
 			//rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 2.f, -38.85714287f)));
-			rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 2.f, -42.85714287f)));
+			rugbyBall = new RugbyBall(PxTransform(PxVec3(0.f, 0.5f, -42.85714287f)));
 			rugbyBall->Material(rubberMat);
 			rugbyBall->Color(PxVec3(140.f / 255.f, 83.f / 255.f, 62.f / 255.f));
 			Add(rugbyBall);
@@ -332,6 +356,24 @@ namespace PhysicsEngine
 			ballCatapult->Material(woodMat);
 			ballCatapult->Color(PxVec3(0.f / 255.f, 0.f / 255.f, 0.f / 255.f));
 			Add(ballCatapult);
+		}
+
+		void SwingJoint() 
+		{
+			//ballChain = new RevoluteJoint(swingTopBar, PxTransform(PxVec3(0.f, 5.f, 0.f)), brick, PxTransform(PxVec3(0.f, 10.f, 2.f)));
+			ballChain = new RevoluteJoint(swingTopBar, PxTransform(PxVec3(0.f, 5.f, 0.f)), truncheon, PxTransform(PxVec3(0.f, 10.f, 2.f)));
+		}
+
+		/// An example use of key release handling
+		void ExampleKeyReleaseHandler()
+		{
+			cerr << "I am realeased!" << endl;
+		}
+
+		/// An example use of key presse handling
+		void ExampleKeyPressHandler()
+		{
+			cerr << "I am pressed!" << endl;
 		}
 
 		//Custom update function
