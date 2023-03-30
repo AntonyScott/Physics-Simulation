@@ -90,6 +90,7 @@ namespace PhysicsEngine
 		}
 	};
 
+	//default compoundobject class which has been adapted to create other objects such as rugby ball, goal posts etc.
 	class CompoundObject : public DynamicActor 
 	{
 	public:
@@ -137,6 +138,7 @@ namespace PhysicsEngine
 			{
 				CreateShape(PxBoxGeometry(dimensions), density);
 			}
+			//cross bar set to sit 3 meters above the ground like a rugby union goalpost
 			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, 3.0f, -71.42857145f)));
 		}
 	};
@@ -155,7 +157,6 @@ namespace PhysicsEngine
 			GetShape(0)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, 0.0f)));
 			GetShape(1)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -14.28571429f)));
 			GetShape(2)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -28.57142858f)));
-			//GetShape(3)->setLocalPose(PxTransform(PxVec3(0.0f, 0.0f, -42.85714287f)));
 			//GetShape(3) is the half way line
 			GetShape(3)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -42.85714287f)));
 			GetShape(4)->setLocalPose(PxTransform(PxVec3(0.0f, -0.49f, -57.14285716f)));
@@ -192,20 +193,21 @@ namespace PhysicsEngine
 		{
 			for (int i = 0; i < 5; i++) //creates 5 spheres
 			{
-				if (i == 0) //sets first sphere with radius of 0.75f
+				if (i == 0) //sets first sphere with radius of 0.40f
 				{
 					radius = 0.40f;
 				}
-				else if (i > 0 and i < 3) //sets spheres 2 and 3 with radius of 0.5f
+				else if (i > 0 and i < 3) //sets spheres 2 and 3 with radius of 0.3f
 				{
 					radius = 0.30f;
 				}
 				else 
 				{
-					radius = 0.20f;
+					radius = 0.20f; //sets spheres 4 and 5 with radius of 0.2f
 				}
 				CreateShape(PxSphereGeometry(radius), density);
 			}
+			//spheres gradually become smaller and are transformed on the pose to look like a rugby ball
 			GetShape(0)->setLocalPose((PxTransform(PxVec3(0.0f, 0.0f, 0.0f))));
 			GetShape(1)->setLocalPose((PxTransform(PxVec3(0.20f, 0.0f, 0.0f))));
 			GetShape(2)->setLocalPose((PxTransform(PxVec3(-0.20f, 0.0f, 0.0f))));
@@ -353,10 +355,6 @@ namespace PhysicsEngine
 	class Knights : public DynamicActor
 	{
 	public:
-		//a Box with default parameters:
-		// - pose in 0,0,0
-		// - dimensions: 1m x 1m x 1m
-		// - denisty: 1kg/m^3
 		Knights(const PxTransform& pose = PxTransform(PxIdentity), PxVec3 dimensions = PxVec3(0.5f, 2.f, 0.5f), PxReal density = 1.f)
 			: DynamicActor(pose)
 		{

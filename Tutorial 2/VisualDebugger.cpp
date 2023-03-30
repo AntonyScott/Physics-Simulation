@@ -95,6 +95,8 @@ namespace VisualDebugger
 		hud.AddLine(HELP, " Simulation");
 		hud.AddLine(HELP, "    F1 - swing rugby ball");
 		hud.AddLine(HELP, "    F2 - respawn rugby ball");
+		hud.AddLine(HELP, "    F3 - fire pitchfork");
+		hud.AddLine(HELP, "    F4 - glass plane");
 		hud.AddLine(HELP, "    F9 - select next actor");
 		hud.AddLine(HELP, "    F10 - pause");
 		hud.AddLine(HELP, "    F12 - reset");
@@ -269,16 +271,20 @@ namespace VisualDebugger
 		{
 			//display control
 		case GLUT_KEY_F1:
-			//hud on/off
+			//turn on joint motor
 			scene->SwingJoint();
 			break;
 		case GLUT_KEY_F2:
-			//hud on/off
+			//spawn new ball
 			scene->Ball();
 			break;
 		case GLUT_KEY_F3:
-			//hud on/off
+			//fire pitchfork
 			scene->Fork(camera->getEye(), camera->getDir());
+			break;
+		case GLUT_KEY_F4:
+			//turn plane into glass
+			scene->PlaneTranformation();
 			break;
 		case GLUT_KEY_F5:
 			//hud on/off
