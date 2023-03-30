@@ -93,7 +93,7 @@ namespace VisualDebugger
 		hud.AddLine(EMPTY, "");
 		//add a help screen
 		hud.AddLine(HELP, " Simulation");
-		hud.AddLine(HELP, "    F1 - swing rugby ball");
+		hud.AddLine(HELP, "    F1 - kick rugby ball");
 		hud.AddLine(HELP, "    F2 - respawn rugby ball");
 		hud.AddLine(HELP, "    F3 - fire pitchfork");
 		hud.AddLine(HELP, "    F4 - glass plane");

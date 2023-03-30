@@ -53,7 +53,6 @@ namespace PhysicsEngine
 		InnerBarrierLines* innerBarrierLines;
 		OuterBarrierLines* outerBarrierLines;
 		BallCatapult* ballCatapult;
-		//Trampoline* trampoline;
 		Knights* knights;
 		RevoluteJoint* ballChain;
 
@@ -97,7 +96,7 @@ namespace PhysicsEngine
 			//ball spawn function
 			Ball();
 
-			//truncheon spawn function, truncheon actor used in swing (called in keypress in visualdebugger)
+			//truncheon spawn function, truncheon actor used in swing (called in keypress in visual debugger)
 			TruncheonWeapon();
 
 			//swing arch spawn function
@@ -108,8 +107,6 @@ namespace PhysicsEngine
 			
 			//spawns in army
 			KnightArmy();
-			/*trampoline = new Trampoline(PxVec3(3.f, 3.f, 3.f), PxReal(5.f), PxReal(5.f));
-			trampoline->AddToScene(this);*/
 		}
 
 		void RugbyPitch() 

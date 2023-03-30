@@ -119,11 +119,11 @@ namespace PhysicsEngine
 			{
 				CreateShape(PxBoxGeometry(dimensions), density);
 			}
-			//distance between goal posts is 5.6 meters (-2.3f and 2.3f)
+			//distance between goal posts is 5.6 meters (-2.8f and 2.8f)
 			//goal posts are raised by 13f on Y axis to sit on pitch
 			//they are placed on the goal line on the Z axis
-			GetShape(0)->setLocalPose(PxTransform(PxVec3(-2.3f, 13.f, -71.42857145f)));
-			GetShape(1)->setLocalPose(PxTransform(PxVec3(2.3f, 13.f, -71.42857145f)));
+			GetShape(0)->setLocalPose(PxTransform(PxVec3(-2.8f, 13.f, -71.42857145f)));
+			GetShape(1)->setLocalPose(PxTransform(PxVec3(2.8f, 13.f, -71.42857145f)));
 		}
 	};
 
