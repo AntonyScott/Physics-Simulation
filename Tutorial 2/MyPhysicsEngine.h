@@ -221,7 +221,7 @@ namespace PhysicsEngine
 		void KnightArmy() 
 		{
 			//spawn function for spawing cubes "knights" that guard the goal
-			knights = new Knights(PxTransform(PxVec3(0.f, 0.f, -57.14285716f)));
+			knights = new Knights(PxTransform(PxVec3(0.f, 1.f, -57.14285716f)));
 			knights->Color(PxVec3(191.f / 255.f, 128.f / 255.f, 105.f / 255.f));
 			Add(knights);
 		}
